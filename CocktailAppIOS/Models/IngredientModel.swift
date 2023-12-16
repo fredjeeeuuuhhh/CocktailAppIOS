@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct IngredientModel{
+struct IngredientModel: Hashable, Identifiable{
     var id: Int
     var name: String
     var description: String
