@@ -8,12 +8,26 @@
 import SwiftUI
 
 struct IngredientListView: View {
+    @State private var isShowingDetail = false
+    @State private var selectedIngredient: Ingredient?
     var body: some View {
-        NavigationStack{
-            List(IngredientMockData.sampleIngredients,id: \.strIngredient){ ingredient in
-                IngredientListItem(ingredient: ingredient)
+        ZStack{
+            NavigationStack{
+                List(IngredientMockData.sampleIngredients,id: \.strIngredient){ ingredient in
+                    IngredientListItem(ingredient: ingredient)
+                        .onTapGesture {
+                            selectedIngredient = ingredient
+                            isShowingDetail = true
+                        }
+                }
+                .navigationTitle("Ingredients")
+                .disabled(isShowingDetail)
+            } 
+            .blur(radius: isShowingDetail ? 20 : 0)
+            
+            if(isShowingDetail){
+                IngredientDetailView(ingredient: selectedIngredient!, isShowingDetail: $isShowingDetail)
             }
-            .navigationTitle("Ingredients")
         }
        
     }
