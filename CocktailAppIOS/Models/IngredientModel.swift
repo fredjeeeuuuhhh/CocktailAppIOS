@@ -7,10 +7,12 @@
 
 import Foundation
 
-struct IngredientModel: Hashable, Identifiable{
-    var id: Int
-    var name: String
-    var description: String
-    var containsAlcohol: Bool
-    var type: String
+struct Ingredient{
+    let idIngredient: String
+    let strIngredient: String
+    let strDescription: String?
+    let strType: String?
+    let strAlcohol: String?
+    let strABV: String?
 }
+
