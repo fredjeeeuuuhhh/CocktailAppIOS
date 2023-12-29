@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Cocktail: Decodable {
+struct Cocktail: Decodable{
     let idDrink: String
     let strDrink: String
     let strCategory: String?

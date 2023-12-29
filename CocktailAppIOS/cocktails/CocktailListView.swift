@@ -10,8 +10,10 @@ import SwiftUI
 struct CocktailListView: View {
     var body: some View {
         NavigationStack{
-            Text("Cocktails!")
-            .navigationTitle(" Cocktails")
+            List(CocktailMockData.sampleCocktails, id: \.idDrink){ cocktail in
+               CocktailListItem(cocktail: cocktail)
+            }
+            .navigationTitle("Cocktails")
         }
     }
 }

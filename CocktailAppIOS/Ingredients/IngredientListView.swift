@@ -10,8 +10,10 @@ import SwiftUI
 struct IngredientListView: View {
     var body: some View {
         NavigationStack{
-            Text("Ingredients!")
-                .navigationTitle("Ingredients")
+            List(IngredientMockData.sampleIngredients,id: \.strIngredient){ ingredient in
+                IngredientListItem(ingredient: ingredient)
+            }
+            .navigationTitle("Ingredients")
         }
        
     }
