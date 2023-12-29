@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CocktailDetailView: View {
     let cocktail: Cocktail
+    @Binding var isShowingDetail: Bool
     var body: some View {
         
         VStack{
@@ -91,7 +92,7 @@ struct CocktailDetailView: View {
         .cornerRadius(12)
         .shadow(radius: 40)
         .overlay(Button{
-            
+            isShowingDetail = false
         }label: {
             ZStack{
                 Circle()
@@ -107,6 +108,4 @@ struct CocktailDetailView: View {
     }
 }
 
-#Preview {
-    CocktailDetailView(cocktail: CocktailMockData.sampleCocktail)
-}
+

@@ -8,12 +8,26 @@
 import SwiftUI
 
 struct CocktailListView: View {
+    @State private var isShowingDetail = false
+    @State private var selectedCocktail: Cocktail?
     var body: some View {
-        NavigationStack{
-            List(CocktailMockData.sampleCocktails, id: \.idDrink){ cocktail in
-               CocktailListItem(cocktail: cocktail)
+        ZStack{
+            NavigationStack{
+                List(CocktailMockData.sampleCocktails, id: \.idDrink){ cocktail in
+                   CocktailListItem(cocktail: cocktail)
+                        .onTapGesture {
+                            selectedCocktail = cocktail
+                            isShowingDetail = true
+                        }
+                }
+                .navigationTitle("Cocktails")
+                .disabled(isShowingDetail)
             }
-            .navigationTitle("Cocktails")
+            .blur(radius: isShowingDetail ? 20 : 0)
+            
+            if(isShowingDetail){
+                CocktailDetailView(cocktail: selectedCocktail!, isShowingDetail: $isShowingDetail)
+            }
         }
     }
 }
