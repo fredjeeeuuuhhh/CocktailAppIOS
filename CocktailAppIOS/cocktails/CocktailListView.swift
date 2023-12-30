@@ -23,6 +23,9 @@ struct CocktailListView: View {
                 .navigationTitle("Cocktails")
                 .disabled(isShowingDetail)
             }
+            .task {
+                // load cocktails async manner
+            }
             .blur(radius: isShowingDetail ? 20 : 0)
             
             if(isShowingDetail){

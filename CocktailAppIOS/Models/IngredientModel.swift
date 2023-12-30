@@ -16,7 +16,7 @@ struct Ingredient: Decodable{
     let strABV: String?
 }
 
-struct IngredientResponse{
+struct IngredientResponse: Decodable{
     let ingredients: [Ingredient]
 }
 

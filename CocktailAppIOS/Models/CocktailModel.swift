@@ -47,7 +47,7 @@ struct Cocktail: Decodable{
     let strMeasure15: String?
 }
 
-struct CocktailGetAllResponse{
+struct CocktailGetAllResponse: Decodable{
     let drinks: [Cocktail]
 }
 
