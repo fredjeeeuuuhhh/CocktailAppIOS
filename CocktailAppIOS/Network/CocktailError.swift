@@ -9,7 +9,5 @@ import Foundation
 
 enum CocktailError: Error {
     case invalidURL
-    case invalidResponse
     case invalidData
-    case unableToComplete
 }

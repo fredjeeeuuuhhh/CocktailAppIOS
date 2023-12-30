@@ -10,29 +10,25 @@ import Foundation
 
 final class CocktailListViewModel: ObservableObject {
     @Published var cocktails: [Cocktail] = []
-    
+    @Published var alertItem: AlertItem?
+    @Published var isLoading = false
     func getAllCocktailsByFirstLetter(firstLetter: String){
+        isLoading = true
         Task{
             do{
-                let cocktailResponse = try await NetworkManager.shared.getAllCocktailsByFirstLetter(firstLetter: firstLetter)
-                cocktailResponse.forEach{ cocktail in
-                    cocktails.append(cocktail)
-                }
+                cocktails = try await NetworkManager.shared.getAllCocktailsByFirstLetter(firstLetter: firstLetter)
+                isLoading = false
             } catch {
                 if let cocktailError = error as? CocktailError{
                     switch cocktailError{
                     case .invalidURL:
-                        print("Invalid URL")
-                    case .invalidResponse:
-                        print("Invalid Response")
+                        alertItem = AlertContext.invalidUrl
                     case .invalidData:
-                        print("Invalid Data")
-                    case .unableToComplete:
-                        print("Unable to complete")
+                        alertItem = AlertContext.invalidData
                     }
                 }
             }
         }
     }
+    
 }
-

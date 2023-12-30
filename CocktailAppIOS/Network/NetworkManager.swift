@@ -21,7 +21,7 @@ final class NetworkManager{
         }
         
         let (data, _) = try await URLSession.shared.data(from: url)
-        
+       
         do{
             let decoder = JSONDecoder()
             return try decoder.decode(CocktailGetAllResponse.self, from: data).drinks
