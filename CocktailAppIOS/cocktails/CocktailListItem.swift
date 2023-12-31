@@ -11,7 +11,7 @@ struct CocktailListItem: View{
     let cocktail: Cocktail
     var body: some View{
         HStack{
-            AsyncImage(url: URL(string: cocktail.strDrinkThumb+"/preview")){ image in
+            AsyncImage(url: URL(string: cocktail.thumbNail)){ image in
                 image
                     .resizable()
             } placeholder: {
@@ -23,15 +23,58 @@ struct CocktailListItem: View{
             .frame(width: 100,height: 100,alignment: .center)
             .cornerRadius(8)
             
-            Spacer()
-            Text(cocktail.strDrink)
-                .font(.title2)
-                .fontWeight(.medium)
-            Spacer()
+            VStack(alignment: .leading, spacing: 5){
+                HStack{
+                    Spacer()
+                    Text(cocktail.title)
+                        .font(.title2)
+                        .fontWeight(.medium)
+                    Spacer()
+                }
+               
+                HStack(spacing: 5){
+                   
+                    Text("Category")
+                        .bold()
+                        .font(.body)
+                    
+                    Text(cocktail.category ?? "none")
+                        .foregroundColor(.secondary)
+                        .fontWeight(.semibold)
+                        .italic()
+                    Spacer()
+                }
+                HStack(spacing: 5){
+                   
+                    Text("Glass")
+                        .bold()
+                        .font(.body)
+                    
+                    Text(cocktail.glass ?? "none")
+                        .foregroundColor(.secondary)
+                        .fontWeight(.semibold)
+                        .italic()
+                    Spacer()
+                }
+                
+                HStack(spacing: 5){
+                    
+                    Text("Alcoholic")
+                        .bold()
+                        .font(.body)
+                    Text(cocktail.alcoholicFilter ?? "none")
+                        .foregroundColor(.secondary)
+                        .fontWeight(.semibold)
+                        .italic()
+                    Spacer()
+                }
+               
+            }
+           .padding(.horizontal)
+            
+           
         }
     }
 }
 
-#Preview {
-    CocktailListItem(cocktail: CocktailMockData.sampleCocktail)
-}
+

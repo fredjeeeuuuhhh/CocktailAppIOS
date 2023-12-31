@@ -73,7 +73,7 @@ struct IngredientDetailView: View {
                     
                     ScrollView(.horizontal){
                         LazyHStack{
-                            ForEach(CocktailMockData.sampleCocktails, id: \.idDrink){
+                            ForEach(CocktailMockData.sampleCocktails){
                                 cocktail in
                                 VStack{
                                     Image("preview")
@@ -81,7 +81,7 @@ struct IngredientDetailView: View {
                                         .aspectRatio(contentMode: .fit)
                                         .frame(width: 100, height: 100)
                                         .cornerRadius(8)
-                                    Text(cocktail.strDrink)
+                                    Text(cocktail.title)
                                 }
                             }
                         }

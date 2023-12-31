@@ -9,33 +9,103 @@ import SwiftUI
 
 struct CocktailListView: View {
     @StateObject var viewModel = CocktailListViewModel()
-    @State private var isShowingDetail = false
-    @State private var selectedCocktail: Cocktail?
+    
    
     var body: some View {
         ZStack{
+           
             NavigationStack{
-                List(viewModel.cocktails, id: \.idDrink){ cocktail in
+                
+                ScrollView(.horizontal){
+                    LazyHStack{
+                        Text("a")
+                            .frame(width: 50, height: 25)
+                            .cornerRadius(8)
+                            .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2)
+                            .padding(2)
+                            .onTapGesture {
+                                viewModel.getAllCocktailsByFirstLetter(firstLetter: "a")
+                            }
+                        Text("b")
+                            .frame(width: 50, height: 25)
+                            .cornerRadius(8)
+                            .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2)
+                            .padding(2)
+                            .onTapGesture {
+                                viewModel.getAllCocktailsByFirstLetter(firstLetter: "b")
+                            }
+                        Text("c")
+                            .frame(width: 50, height: 25)
+                            .cornerRadius(8)
+                            .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2)
+                            .padding(2)
+                            .onTapGesture {
+    
+                            }
+                        Text("d")
+                            .frame(width: 50, height: 25)
+                            .cornerRadius(8)
+                            .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2)
+                            .padding(2)
+                            .onTapGesture {
+    
+                            }
+                        Text("e")
+                            .frame(width: 50, height: 25)
+                            .cornerRadius(8)
+                            .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2)
+                            .padding(2)
+                            .onTapGesture {
+    
+                            }
+                        Text("f")
+                            .frame(width: 50, height: 25)
+                            .cornerRadius(8)
+                            .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2)
+                            .padding(2)
+                            .onTapGesture {
+    
+                            }
+                        Text("g")
+                            .frame(width: 50, height: 25)
+                            .cornerRadius(8)
+                            .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2)
+                            .padding(2)
+                            .onTapGesture {
+    
+                            }
+                        Text("h")
+                            .frame(width: 50, height: 25)
+                            .cornerRadius(8)
+                            .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2)
+                            .padding(2)
+                            .onTapGesture {
+    
+                            }
+                    }
+                }
+                .frame(height: 50)
+                List(viewModel.cocktails){ cocktail in
                    CocktailListItem(cocktail: cocktail)
                         .onTapGesture {
-                            selectedCocktail = cocktail
-                            isShowingDetail = true
+                            viewModel.selectedCocktail = cocktail
+                            viewModel.isShowingDetail = true
                         }
                 }
                 .navigationTitle("Cocktails")
-                .disabled(isShowingDetail)
+                .disabled(viewModel.isShowingDetail)
             }
             .task {
                 viewModel.getAllCocktailsByFirstLetter(firstLetter: "a")
             }
-            .blur(radius: isShowingDetail ? 20 : 0)
+            .blur(radius: viewModel.isShowingDetail ? 20 : 0)
             
             if viewModel.isLoading {
                 LoadingSpinnerView()
             }
             
-            if isShowingDetail {
-                CocktailDetailView(cocktail: selectedCocktail!, isShowingDetail: $isShowingDetail)
+            if viewModel.isShowingDetail {
+                CocktailDetailView(cocktail: viewModel.selectedCocktail!, isShowingDetail: $viewModel.isShowingDetail)
             }
         }
         .alert(item: $viewModel.alertItem){

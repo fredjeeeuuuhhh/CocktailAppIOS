@@ -7,7 +7,62 @@
 
 import Foundation
 
-struct Cocktail: Decodable{
+struct Cocktail: Identifiable{
+    let id: Int
+    let title: String
+    let category: String?
+    let alcoholicFilter: String?
+    let glass: String?
+    let instructions: String?
+    let thumbNail: String
+    let ingredients: [String]?
+    let measurements: [String]?
+}
+
+extension [ApiCocktail] {
+    func mapToCocktails() -> [Cocktail] {
+        return self.map{ apiCocktail in
+            Cocktail(id: Int(apiCocktail.idDrink)!, title: apiCocktail.strDrink, category: apiCocktail.strCategory, alcoholicFilter: apiCocktail.strAlcohol, glass: apiCocktail.strGlass, instructions: apiCocktail.strInstructions, thumbNail: apiCocktail.strDrinkThumb + "/preview", ingredients: [
+                apiCocktail.strIngredient1,
+                apiCocktail.strIngredient2,
+                apiCocktail.strIngredient3,
+                apiCocktail.strIngredient4,
+                apiCocktail.strIngredient5,
+                apiCocktail.strIngredient6,
+                apiCocktail.strIngredient7,
+                apiCocktail.strIngredient8,
+                apiCocktail.strIngredient9,
+                apiCocktail.strIngredient10,
+                apiCocktail.strIngredient11,
+                apiCocktail.strIngredient12,
+                apiCocktail.strIngredient13,
+                apiCocktail.strIngredient14,
+                apiCocktail.strIngredient15,
+                ].compactMap { $0 },
+                measurements: [
+                    apiCocktail.strMeasure1,
+                    apiCocktail.strMeasure2,
+                    apiCocktail.strMeasure3,
+                    apiCocktail.strMeasure4,
+                    apiCocktail.strMeasure5,
+                    apiCocktail.strMeasure6,
+                    apiCocktail.strMeasure7,
+                    apiCocktail.strMeasure8,
+                    apiCocktail.strMeasure9,
+                    apiCocktail.strMeasure10,
+                    apiCocktail.strMeasure11,
+                    apiCocktail.strMeasure12,
+                    apiCocktail.strMeasure13,
+                    apiCocktail.strMeasure14,
+                    apiCocktail.strMeasure15
+                ].compactMap { $0 }
+            )
+        }
+        
+    }
+}
+
+struct ApiCocktail: Decodable{
     let idDrink: String
     let strDrink: String
     let strCategory: String?
@@ -48,17 +103,13 @@ struct Cocktail: Decodable{
 }
 
 struct CocktailGetAllResponse: Decodable{
-    let drinks: [Cocktail]
+    let drinks: [ApiCocktail]
 }
 
 struct CocktailMockData{
-    static let sampleCocktail = Cocktail(idDrink: "1",strDrink: "Bacardi Cola", strCategory: "Cocktail",strAlcohol: "Alcohol", strGlass: "Cocktail glass", strInstructions: "1. Poor in a glass and mix", strDrinkThumb: "",strIngredient1: "Bacardi",strIngredient2: "Cola",strIngredient3: nil,strIngredient4:nil,strIngredient5:nil,strIngredient6:nil,strIngredient7:nil,strIngredient8:nil,strIngredient9:nil,strIngredient10:nil,strIngredient11:nil,strIngredient12:nil,strIngredient13:nil,strIngredient14:nil,strIngredient15:nil,strMeasure1: "1 oz", strMeasure2: "Can",strMeasure3: nil,strMeasure4: nil,strMeasure5: nil,strMeasure6: nil,strMeasure7: nil,strMeasure8: nil,strMeasure9: nil,strMeasure10: nil,strMeasure11: nil,strMeasure12: nil,strMeasure13: nil,strMeasure14: nil,strMeasure15: nil)
+    static let sampleCocktail = Cocktail(id: 1, title: "Bacardi cola", category: "Cocktail", alcoholicFilter: "Contains alcohol", glass: "Cocktailglass", instructions: "1. poor and mix", thumbNail: "", ingredients: ["Bacardi","Cola"], measurements: ["1 oz","can"])
     
     static let sampleCocktails = [
-        sampleCocktail,
-        Cocktail(idDrink: "2",strDrink: "Vodka Redbull", strCategory: "Cocktail",strAlcohol: "Alcohol", strGlass: "Cocktail glass", strInstructions: "1. Poor in a glass and mix", strDrinkThumb: "",strIngredient1: "Vodka",strIngredient2: "Redbull",strIngredient3: nil,strIngredient4:nil,strIngredient5:nil,strIngredient6:nil,strIngredient7:nil,strIngredient8:nil,strIngredient9:nil,strIngredient10:nil,strIngredient11:nil,strIngredient12:nil,strIngredient13:nil,strIngredient14:nil,strIngredient15:nil,strMeasure1: "1 oz", strMeasure2: "Can",strMeasure3: nil,strMeasure4: nil,strMeasure5: nil,strMeasure6: nil,strMeasure7: nil,strMeasure8: nil,strMeasure9: nil,strMeasure10: nil,strMeasure11: nil,strMeasure12: nil,strMeasure13: nil,strMeasure14: nil,strMeasure15: nil)
-        ,
-        Cocktail(idDrink: "3",strDrink: "Rum Cola", strCategory: "Cocktail",strAlcohol: "Alcohol", strGlass: "Cocktail glass", strInstructions: "1. Poor in a glass and mix", strDrinkThumb: "",strIngredient1: "Rum",strIngredient2: "Cola",strIngredient3: nil,strIngredient4:nil,strIngredient5:nil,strIngredient6:nil,strIngredient7:nil,strIngredient8:nil,strIngredient9:nil,strIngredient10:nil,strIngredient11:nil,strIngredient12:nil,strIngredient13:nil,strIngredient14:nil,strIngredient15:nil,strMeasure1: "1 oz", strMeasure2: "Can",strMeasure3: nil,strMeasure4: nil,strMeasure5: nil,strMeasure6: nil,strMeasure7: nil,strMeasure8: nil,strMeasure9: nil,strMeasure10: nil,strMeasure11: nil,strMeasure12: nil,strMeasure13: nil,strMeasure14: nil,strMeasure15: nil),
-        Cocktail(idDrink: "4",strDrink: "Rum Cola", strCategory: "Cocktail",strAlcohol: "Alcohol", strGlass: "Cocktail glass", strInstructions: "1. Poor in a glass and mix", strDrinkThumb: "",strIngredient1: "Rum",strIngredient2: "Cola",strIngredient3: nil,strIngredient4:nil,strIngredient5:nil,strIngredient6:nil,strIngredient7:nil,strIngredient8:nil,strIngredient9:nil,strIngredient10:nil,strIngredient11:nil,strIngredient12:nil,strIngredient13:nil,strIngredient14:nil,strIngredient15:nil,strMeasure1: "1 oz", strMeasure2: "Can",strMeasure3: nil,strMeasure4: nil,strMeasure5: nil,strMeasure6: nil,strMeasure7: nil,strMeasure8: nil,strMeasure9: nil,strMeasure10: nil,strMeasure11: nil,strMeasure12: nil,strMeasure13: nil,strMeasure14: nil,strMeasure15: nil)
+        sampleCocktail
     ]
 }

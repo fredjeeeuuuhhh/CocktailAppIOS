@@ -15,7 +15,7 @@ final class NetworkManager{
     static let baseURL = "https://www.thecocktaildb.com/api/json/v1/1/"
     private init(){}
     
-    func getAllCocktailsByFirstLetter(firstLetter: String) async throws -> [Cocktail] {
+    func getAllCocktailsByFirstLetter(firstLetter: String) async throws -> [ApiCocktail] {
         guard let url = URL(string: "\(NetworkManager.baseURL)/search.php?f=\(firstLetter)") else {
             throw CocktailError.invalidURL
         }

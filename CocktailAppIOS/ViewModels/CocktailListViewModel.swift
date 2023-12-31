@@ -12,11 +12,13 @@ final class CocktailListViewModel: ObservableObject {
     @Published var cocktails: [Cocktail] = []
     @Published var alertItem: AlertItem?
     @Published var isLoading = false
+    @Published var isShowingDetail = false
+    @Published var selectedCocktail: Cocktail?
     func getAllCocktailsByFirstLetter(firstLetter: String){
         isLoading = true
         Task{
             do{
-                cocktails = try await NetworkManager.shared.getAllCocktailsByFirstLetter(firstLetter: firstLetter)
+                cocktails = try await NetworkManager.shared.getAllCocktailsByFirstLetter(firstLetter: firstLetter).mapToCocktails()
                 isLoading = false
             } catch {
                 if let cocktailError = error as? CocktailError{
