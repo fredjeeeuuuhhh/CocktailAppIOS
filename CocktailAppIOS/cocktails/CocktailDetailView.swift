@@ -11,7 +11,6 @@ struct CocktailDetailView: View {
     let cocktail: Cocktail
     @Binding var isShowingDetail: Bool
     var body: some View {
-        
         VStack{
             ScrollView{
                 AsyncImage(url: URL(string: cocktail.thumbNail)){ image in

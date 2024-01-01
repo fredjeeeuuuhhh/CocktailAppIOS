@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct IngredientListView: View {
+    @StateObject var viewModel = IngredientListViewModel()
     @State private var isShowingDetail = false
-    @State private var selectedIngredient: Ingredient?
+    @State private var selectedIngredientName: String?
     var body: some View {
         ZStack{
             NavigationStack{
-                List(IngredientMockData.sampleIngredients,id: \.strIngredient){ ingredient in
+                List(viewModel.ingredients){ ingredient in
                     IngredientListItem(ingredient: ingredient)
                         .onTapGesture {
-                            selectedIngredient = ingredient
+                            selectedIngredientName = ingredient.name
                             isShowingDetail = true
                         }
                 }
@@ -26,7 +27,7 @@ struct IngredientListView: View {
             .blur(radius: isShowingDetail ? 20 : 0)
             
             if(isShowingDetail){
-                IngredientDetailView(ingredient: selectedIngredient!, isShowingDetail: $isShowingDetail)
+                IngredientDetailView(ingredientName: selectedIngredientName!, isShowingDetail: $isShowingDetail)
             }
         }
        

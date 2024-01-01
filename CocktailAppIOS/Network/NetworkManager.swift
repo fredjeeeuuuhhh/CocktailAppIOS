@@ -29,4 +29,19 @@ final class NetworkManager{
             throw CocktailError.invalidData
         }
     }
+    
+    func getIngredientByName(name: String) async throws -> ApiIngredient {
+        guard let url = URL(string: "\(NetworkManager.baseURL)/search.php?i=\(name)") else {
+            throw CocktailError.invalidURL
+        }
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        do{
+            let decoder = JSONDecoder()
+            return try decoder.decode(IngredientResponse.self, from: data).ingredients.first!
+        }catch {
+            throw CocktailError.invalidData
+        }
+    }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Ingredient: Decodable{
+struct ApiIngredient: Decodable{
     let idIngredient: String
     let strIngredient: String
     let strDescription: String?
@@ -15,18 +15,43 @@ struct Ingredient: Decodable{
     let strAlcohol: String?
     let strABV: String?
 }
+struct ApiIngredientName: Decodable{
+    let strIngredient1: String
+}
+struct IngredientListResponse: Decodable{
+    let drinks: [ApiIngredientName]
+}
+extension [ApiIngredientName] {
+    func ingredientListToIngredientNameOnly() -> [Ingredient]{
+        return self.map{
+            ingredient in
+            Ingredient(id: ingredient.strIngredient1, name: ingredient.strIngredient1, description: nil, type: nil, containsAlcohol: false, alcoholPercentage: nil, thumbnail: "https://www.thecocktaildb.com/images/ingredients/\(ingredient.strIngredient1)-Small.png")
+        }
+    }
+}
 
+extension ApiIngredient {
+    func mapToIngredient() -> Ingredient{
+        return Ingredient(id: self.idIngredient, name: self.strIngredient, description: self.strDescription, type: self.strType, containsAlcohol: self.strAlcohol ?? "" == "Yes" ? true : false, alcoholPercentage: self.strABV, thumbnail: "https://www.thecocktaildb.com/images/ingredients/\(self.strIngredient)-Small.png")
+    }
+}
+struct Ingredient: Identifiable{
+    let id: String
+    let name: String
+    let description: String?
+    let type: String?
+    let containsAlcohol: Bool
+    let alcoholPercentage: String?
+    let thumbnail: String
+}
 struct IngredientResponse: Decodable{
-    let ingredients: [Ingredient]
+    let ingredients: [ApiIngredient]
 }
 
 struct IngredientMockData{
-    static let sampleIngredient = Ingredient(idIngredient: "1", strIngredient: "Cola", strDescription: "Coca Cola 33cl", strType: "Soda", strAlcohol: "No", strABV: nil)
-    
+    static let sampleIngredient = Ingredient(id: "1", name: "Cola", description: "Coca cola", type: "Soda", containsAlcohol: false, alcoholPercentage: nil, thumbnail: "")
+
     static let sampleIngredients = [
-        sampleIngredient,
-        Ingredient(idIngredient: "2", strIngredient: "Bacardi", strDescription: "Bacardi white", strType: "Bacardi", strAlcohol: "Yes", strABV: "40"),
-        Ingredient(idIngredient: "3", strIngredient: "Redbull", strDescription: "Gives you wings", strType: "Soda", strAlcohol: "No", strABV: nil),
-        Ingredient(idIngredient: "4", strIngredient: "Vodka", strDescription: "Eristof Vodka white", strType: "Vodka", strAlcohol: "Yes", strABV: "40")
+        sampleIngredient
     ]
 }

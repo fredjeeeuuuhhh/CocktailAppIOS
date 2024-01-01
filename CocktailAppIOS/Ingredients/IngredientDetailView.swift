@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct IngredientDetailView: View {
-    let ingredient: Ingredient
+    @StateObject var viewModel = IngredientDetailViewModel()
+    let ingredientName: String
     @Binding var isShowingDetail: Bool
     var body: some View {
         VStack{
@@ -18,7 +19,7 @@ struct IngredientDetailView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 300, height: 300)
                 VStack{
-                    Text(ingredient.strIngredient)
+                    Text(viewModel.ingredient?.name ?? "")
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                         .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                         .padding()
@@ -29,7 +30,7 @@ struct IngredientDetailView: View {
                                 .bold()
                                 .font(.title3)
                             
-                            Text(ingredient.strType ?? "none")
+                            Text(viewModel.ingredient?.type ?? "none")
                                 .foregroundColor(.secondary)
                                 .fontWeight(.semibold)
                                 .italic()
@@ -41,7 +42,7 @@ struct IngredientDetailView: View {
                                 .bold()
                                 .font(.title3)
                            
-                            Text(ingredient.strAlcohol ?? "none")
+                            Text(viewModel.ingredient?.containsAlcohol  == true ? "Yes" : "No")
                                 .foregroundColor(.secondary)
                                 .fontWeight(.semibold)
                                 .italic()
@@ -51,7 +52,7 @@ struct IngredientDetailView: View {
                             Text("Alcohol percentage")
                                 .bold()
                                 .font(.title3)
-                            Text(ingredient.strABV ?? "none")
+                            Text(viewModel.ingredient?.alcoholPercentage ?? "none")
                                 .foregroundColor(.secondary)
                                 .fontWeight(.semibold)
                                 .italic()
@@ -63,8 +64,8 @@ struct IngredientDetailView: View {
                         .foregroundColor(.black)
                     
                     
-                    if(ingredient.strDescription != nil){
-                        Text(ingredient.strDescription!)
+                    if(viewModel.ingredient?.description != nil){
+                        Text(viewModel.ingredient?.description! ?? "")
                             .multilineTextAlignment(.center)
                         Divider()
                             .foregroundColor(.black)
@@ -111,10 +112,12 @@ struct IngredientDetailView: View {
                     .foregroundColor(.black)
             }
         }, alignment: .topTrailing)
+        .task {
+            viewModel.getIngredientByName(name: ingredientName)
+        }
     }
 }
 
 #Preview {
-    IngredientDetailView(ingredient: IngredientMockData.sampleIngredient,
-                         isShowingDetail: .constant(true))
+    IngredientDetailView(ingredientName: "Gin",isShowingDetail: .constant(true))
 }
