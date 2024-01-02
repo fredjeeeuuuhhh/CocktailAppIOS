@@ -9,22 +9,31 @@ import SwiftUI
 
 struct CocktailListView: View {
     @StateObject var viewModel = CocktailListViewModel()
-    
+   
     var body: some View {
+        
         ZStack{
             NavigationStack{
                 ScrollView(.horizontal){
                     LazyHStack{
-                        ForEach(Alphabet.characters, id: \.self){
-                            character in
+                        ForEach(Alphabet.characters, id: \.self) { character in
                             Text(character)
-                                .frame(width: 50, height: 25)
-                                .cornerRadius(8)
-                                .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2)
-                                .padding(2)
-                                .onTapGesture {
-                                    viewModel.getAllCocktailsByFirstLetter(firstLetter: character)
-                                }
+                                    .frame(width: 50, height: 25)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color.black, lineWidth: 2)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .foregroundColor(viewModel.selectedCharacter == character ? Color.accentColor : Color.clear)
+                                            )
+                                    )
+                                    .padding(2)
+                                    .onTapGesture {
+                                        withAnimation {
+                                            viewModel.selectedCharacter = character
+                                            viewModel.getAllCocktailsByFirstLetter(firstLetter: character)
+                                        }
+                                    }
                         }
                     }
                 }
@@ -40,6 +49,7 @@ struct CocktailListView: View {
                 .disabled(viewModel.isShowingDetail)
             }
             .task {
+                viewModel.selectedCharacter = "a"
                 viewModel.getAllCocktailsByFirstLetter(firstLetter: "a")
             }
             .blur(radius: viewModel.isShowingDetail ? 20 : 0)
@@ -49,7 +59,7 @@ struct CocktailListView: View {
             }
             
             if viewModel.isShowingDetail {
-                CocktailDetailView(cocktail: viewModel.selectedCocktail!, isShowingDetail: $viewModel.isShowingDetail)
+                CocktailDetailView(cocktailId: viewModel.selectedCocktail!.id, isShowingDetail: $viewModel.isShowingDetail)
             }
         }
         .alert(item: $viewModel.alertItem){

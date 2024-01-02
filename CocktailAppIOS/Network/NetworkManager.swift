@@ -28,6 +28,21 @@ final class NetworkManager{
         }
     }
     
+    func getCocktailById(id: Int) async throws -> [ApiCocktail] {
+        guard let url = URL(string: "\(NetworkManager.baseURL)/lookup.php?i=\(id)") else {
+            throw CocktailError.invalidURL
+        }
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+       
+        do{
+            let decoder = JSONDecoder()
+            return try decoder.decode(CocktailGetAllResponse.self, from: data).drinks
+        }catch {
+            throw CocktailError.invalidData
+        }
+    }
+    
     func getAllIngredients() async throws -> [ApiIngredientName] {
         guard let url = URL(string: "\(NetworkManager.baseURL)/list.php?i=list") else {
             throw CocktailError.invalidURL

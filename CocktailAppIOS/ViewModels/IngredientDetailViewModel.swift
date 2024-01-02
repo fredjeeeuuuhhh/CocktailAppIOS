@@ -12,7 +12,9 @@ import Foundation
     @Published var cocktails: [Cocktail] = []
     @Published var alertItem: AlertItem?
     @Published var isShowingCocktailDetail = false
-    func getIngredientByName(name: String) {
+    @Published var selectedCocktail: Cocktail?
+    
+    func getIngredientByName(_ name: String) {
         Task{
             do{
                 ingredient = try await NetworkManager.shared.getIngredientByName(name: name).mapToIngredient()
@@ -29,7 +31,7 @@ import Foundation
         }
     }
     
-    func getCocktailsByIngredientName(name: String) {
+    func getCocktailsByIngredientName(_ name: String) {
         Task{
             do{
                 let cocktailResponse = try await NetworkManager.shared.getCocktailsByIngredientName(name: name).mapToCocktails()

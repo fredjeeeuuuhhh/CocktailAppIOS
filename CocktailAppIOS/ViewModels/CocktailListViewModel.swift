@@ -14,7 +14,8 @@ import Foundation
     @Published var isLoading = false
     @Published var isShowingDetail = false
     @Published var selectedCocktail: Cocktail?
-   
+    @Published var selectedCharacter: String = "a"
+    
     func getAllCocktailsByFirstLetter(firstLetter: String){
         isLoading = true
         Task{

@@ -9,13 +9,12 @@ import Foundation
 
 @MainActor final class CocktailDetailViewModel: ObservableObject{
     @Published var cocktail: Cocktail?
-    @Published var isShowingIngredientDetail = false
     @Published var alertItem: AlertItem?
     
-    func getCocktailById(){
+    func getCocktailById(_ id: Int){
         Task{
             do{
-//                cocktail = try await NetworkManager.shared.getCocktailById(id: cocktail?.id)
+                cocktail = try await NetworkManager.shared.getCocktailById(id: id).mapToCocktails().first
             }catch{
                 if let cocktailError = error as? CocktailError{
                     switch cocktailError{

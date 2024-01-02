@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct CocktailDetailView: View {
-    let cocktail: Cocktail
+    @StateObject var viewModel = CocktailDetailViewModel()
+    let cocktailId: Int
     @Binding var isShowingDetail: Bool
     var body: some View {
         VStack{
             ScrollView{
-                AsyncImage(url: URL(string: cocktail.thumbNail)){ image in
+                AsyncImage(url: URL(string: viewModel.cocktail?.thumbNail ?? "")){ image in
                     image
                         .resizable()
                 } placeholder: {
@@ -25,14 +26,14 @@ struct CocktailDetailView: View {
                 .frame(width: 300, height: 300)
                 
                 VStack{
-                    Text(cocktail.title)
+                    Text(viewModel.cocktail?.title ?? "")
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                         .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                         .padding()
                     
-                    ForEach(0..<max(cocktail.ingredients!.count, cocktail.measurements!.count), id: \.self) { index in
-                        let ingredient = index < cocktail.ingredients!.count ? cocktail.ingredients![index] : nil
-                        let measurement = index < cocktail.measurements!.count ? cocktail.measurements![index] : nil
+                    ForEach(0..<max(viewModel.cocktail?.ingredients?.count ?? 0, viewModel.cocktail?.measurements?.count ?? 0), id: \.self) { index in
+                        let ingredient = index < viewModel.cocktail?.ingredients!.count ?? 0 ? viewModel.cocktail?.ingredients![index] : nil
+                        let measurement = index < viewModel.cocktail?.measurements!.count ?? 0 ? viewModel.cocktail?.measurements![index] : nil
                         
                         if let ingredient = ingredient, let measurement = measurement {
                             HStack{
@@ -70,7 +71,7 @@ struct CocktailDetailView: View {
                     }
                 }
                 Divider()
-                ForEach(Array((cocktail.instructions?.split(separator: ", ") ?? []).enumerated()), id: \.offset) { index, instruction in
+                ForEach(Array((viewModel.cocktail?.instructions?.split(separator: ", ") ?? []).enumerated()), id: \.offset) { index, instruction in
                     
                     HStack {
                         Text("\(index + 1).")
@@ -101,6 +102,9 @@ struct CocktailDetailView: View {
                         .foregroundColor(.black)
                 }
             }, alignment: .topTrailing)
+        }
+        .task {
+            viewModel.getCocktailById(cocktailId)
         }
     }
 }

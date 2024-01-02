@@ -13,6 +13,8 @@ import Foundation
     @Published var alertItem: AlertItem?
     @Published var isShowingDetail = false
     @Published var selectedIngredientName: String?
+    @Published var selectedCharacter: String = "a"
+    
     private var allIngredients: [Ingredient] = []
     func getAllIngredients(){
         isLoading = true

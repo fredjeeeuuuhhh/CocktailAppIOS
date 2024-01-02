@@ -17,13 +17,23 @@ struct IngredientListView: View {
                         ForEach(Alphabet.characters, id: \.self){
                             character in
                             Text(character)
-                                .frame(width: 50, height: 25)
-                                .cornerRadius(8)
-                                .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 2)
-                                .padding(2)
-                                .onTapGesture {
-                                    viewModel.filterOnFirstCharacter(character)
-                                }
+                                    .frame(width: 50, height: 25)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color.black, lineWidth: 2)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .foregroundColor(viewModel.selectedCharacter == character ? Color.accentColor : Color.clear)
+                                            )
+                                    )
+                                    .padding(2)
+                                    .onTapGesture {
+                                        withAnimation {
+                                            viewModel.selectedCharacter = character
+                                            viewModel.filterOnFirstCharacter(character)
+                                        }
+                                    }
+                            
                         }
                     }
                 }
@@ -39,6 +49,7 @@ struct IngredientListView: View {
                 .disabled(viewModel.isShowingDetail)
             }
             .task{
+                viewModel.selectedCharacter = "a"
                 viewModel.getAllIngredients()
             }
             .blur(radius: viewModel.isShowingDetail ? 20 : 0)
