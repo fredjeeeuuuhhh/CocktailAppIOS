@@ -10,8 +10,6 @@ import UIKit
 
 final class NetworkManager{
     static let shared = NetworkManager()
-    private let cache = NSCache<NSString,UIImage>()
-    
     static let baseURL = "https://www.thecocktaildb.com/api/json/v1/1/"
     private init(){}
     
@@ -30,6 +28,21 @@ final class NetworkManager{
         }
     }
     
+    func getAllIngredients() async throws -> [ApiIngredientName] {
+        guard let url = URL(string: "\(NetworkManager.baseURL)/list.php?i=list") else {
+            throw CocktailError.invalidURL
+        }
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+       
+        do{
+            let decoder = JSONDecoder()
+            return try decoder.decode(IngredientListResponse.self, from: data).drinks
+        }catch {
+            throw CocktailError.invalidData
+        }
+    }
+    
     func getIngredientByName(name: String) async throws -> ApiIngredient {
         guard let url = URL(string: "\(NetworkManager.baseURL)/search.php?i=\(name)") else {
             throw CocktailError.invalidURL
@@ -40,6 +53,21 @@ final class NetworkManager{
         do{
             let decoder = JSONDecoder()
             return try decoder.decode(IngredientResponse.self, from: data).ingredients.first!
+        }catch {
+            throw CocktailError.invalidData
+        }
+    }
+    
+    func getCocktailsByIngredientName(name: String) async throws -> [ApiCocktail] {
+        guard let url = URL(string: "\(NetworkManager.baseURL)/filter.php?i=\(name)") else {
+            throw CocktailError.invalidURL
+        }
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        do{
+            let decoder = JSONDecoder()
+            return try decoder.decode(CocktailGetAllResponse.self, from: data).drinks
         }catch {
             throw CocktailError.invalidData
         }

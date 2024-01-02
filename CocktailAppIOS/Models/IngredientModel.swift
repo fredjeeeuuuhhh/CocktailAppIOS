@@ -15,26 +15,19 @@ struct ApiIngredient: Decodable{
     let strAlcohol: String?
     let strABV: String?
 }
+
 struct ApiIngredientName: Decodable{
     let strIngredient1: String
 }
+
 struct IngredientListResponse: Decodable{
     let drinks: [ApiIngredientName]
 }
-extension [ApiIngredientName] {
-    func ingredientListToIngredientNameOnly() -> [Ingredient]{
-        return self.map{
-            ingredient in
-            Ingredient(id: ingredient.strIngredient1, name: ingredient.strIngredient1, description: nil, type: nil, containsAlcohol: false, alcoholPercentage: nil, thumbnail: "https://www.thecocktaildb.com/images/ingredients/\(ingredient.strIngredient1)-Small.png")
-        }
-    }
+
+struct IngredientResponse: Decodable{
+    let ingredients: [ApiIngredient]
 }
 
-extension ApiIngredient {
-    func mapToIngredient() -> Ingredient{
-        return Ingredient(id: self.idIngredient, name: self.strIngredient, description: self.strDescription, type: self.strType, containsAlcohol: self.strAlcohol ?? "" == "Yes" ? true : false, alcoholPercentage: self.strABV, thumbnail: "https://www.thecocktaildb.com/images/ingredients/\(self.strIngredient)-Small.png")
-    }
-}
 struct Ingredient: Identifiable{
     let id: String
     let name: String
@@ -43,9 +36,6 @@ struct Ingredient: Identifiable{
     let containsAlcohol: Bool
     let alcoholPercentage: String?
     let thumbnail: String
-}
-struct IngredientResponse: Decodable{
-    let ingredients: [ApiIngredient]
 }
 
 struct IngredientMockData{

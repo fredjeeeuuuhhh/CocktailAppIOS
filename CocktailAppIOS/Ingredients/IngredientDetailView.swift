@@ -14,10 +14,15 @@ struct IngredientDetailView: View {
     var body: some View {
         VStack{
             ScrollView{
-                Image("preview")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 300, height: 300)
+                AsyncImage(url: URL(string: viewModel.ingredient!.thumbnail)){ image in
+                    image
+                        .resizable()
+                } placeholder: {
+                    Image("preview")
+                        .resizable()
+                }
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 300, height: 300)
                 VStack{
                     Text(viewModel.ingredient?.name ?? "")
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
@@ -74,21 +79,25 @@ struct IngredientDetailView: View {
                     
                     ScrollView(.horizontal){
                         LazyHStack{
-                            ForEach(CocktailMockData.sampleCocktails){
+                            ForEach(viewModel.cocktails){
                                 cocktail in
                                 VStack{
-                                    Image("preview")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 100, height: 100)
-                                        .cornerRadius(8)
+                                    AsyncImage(url: URL(string: cocktail.thumbNail)){ image in
+                                        image
+                                            .resizable()
+                                    } placeholder: {
+                                        Image("preview")
+                                            .resizable()
+                                    }
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 100, height: 100)
+                                    .cornerRadius(8)
                                     Text(cocktail.title)
                                 }
                             }
                         }
                     }
                     .padding()
-                  
                 }
                 Spacer()
             }
@@ -114,6 +123,7 @@ struct IngredientDetailView: View {
         }, alignment: .topTrailing)
         .task {
             viewModel.getIngredientByName(name: ingredientName)
+            viewModel.getCocktailsByIngredientName(name: ingredientName)
         }
     }
 }

@@ -8,12 +8,13 @@
 import SwiftUI
 import Foundation
 
-final class CocktailListViewModel: ObservableObject {
+@MainActor final class CocktailListViewModel: ObservableObject {
     @Published var cocktails: [Cocktail] = []
     @Published var alertItem: AlertItem?
     @Published var isLoading = false
     @Published var isShowingDetail = false
     @Published var selectedCocktail: Cocktail?
+   
     func getAllCocktailsByFirstLetter(firstLetter: String){
         isLoading = true
         Task{
