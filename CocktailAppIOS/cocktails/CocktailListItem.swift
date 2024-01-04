@@ -11,14 +11,7 @@ struct CocktailListItem: View{
     let cocktail: Cocktail
     var body: some View{
         HStack{
-            AsyncImage(url: URL(string: cocktail.thumbNail)){ image in
-                image
-                    .resizable()
-            } placeholder: {
-                Image("preview")
-                    .resizable()
-                   
-            }
+            CocktailOrIngredientRemoteImage(urlString: cocktail.thumbNail)
             .aspectRatio(contentMode: .fit)
             .frame(width: 100,height: 100,alignment: .center)
             .cornerRadius(8)

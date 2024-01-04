@@ -10,6 +10,7 @@ import UIKit
 
 final class NetworkManager{
     static let shared = NetworkManager()
+    private let cache = NSCache<NSString, UIImage>()
     static let baseURL = "https://www.thecocktaildb.com/api/json/v1/1/"
     private init(){}
     
@@ -86,5 +87,27 @@ final class NetworkManager{
         }catch {
             throw CocktailError.invalidData
         }
+    }
+    
+    func downloadImage(urlString: String) async throws-> UIImage? {
+        let key = NSString(string: urlString)
+        
+        if let image = cache.object(forKey: key) {
+            return image
+        }
+        
+        guard let url = URL(string: urlString) else {
+            return nil
+        }
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        guard let image = UIImage(data: data) else {
+            return nil
+        }
+        
+        self.cache.setObject(image, forKey: key)
+        
+        return image
     }
 }

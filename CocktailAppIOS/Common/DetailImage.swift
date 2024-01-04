@@ -10,16 +10,12 @@ import SwiftUI
 struct DetailImage: View {
     let url: String
     var body: some View {
-        AsyncImage(url: URL(string: url)){ image in
-            image
-                .resizable()
-        } placeholder: {
-            Image("preview")
-                .resizable()
-               
+        if url != ""{
+            CocktailOrIngredientRemoteImage(urlString: url)
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 300, height: 300)
         }
-        .aspectRatio(contentMode: .fit)
-        .frame(width: 300, height: 300)
     }
 }
+
 

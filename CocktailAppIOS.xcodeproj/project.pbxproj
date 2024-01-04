@@ -35,6 +35,7 @@
 		54B6C7F92B46BA9E008E98A6 /* DetailImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B6C7F82B46BA9E008E98A6 /* DetailImage.swift */; };
 		54B6C7FD2B46C00D008E98A6 /* IngredientCharacteristicRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B6C7FC2B46C00D008E98A6 /* IngredientCharacteristicRow.swift */; };
 		54B6C7FF2B46C42F008E98A6 /* DetailIngredientImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B6C7FE2B46C42F008E98A6 /* DetailIngredientImage.swift */; };
+		54B6C8012B471236008E98A6 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B6C8002B471236008E98A6 /* RemoteImage.swift */; };
 		54B855E22B2C69F3006965B0 /* CocktailListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B855E12B2C69F3006965B0 /* CocktailListViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -87,6 +88,7 @@
 		54B6C7F82B46BA9E008E98A6 /* DetailImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailImage.swift; sourceTree = "<group>"; };
 		54B6C7FC2B46C00D008E98A6 /* IngredientCharacteristicRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientCharacteristicRow.swift; sourceTree = "<group>"; };
 		54B6C7FE2B46C42F008E98A6 /* DetailIngredientImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailIngredientImage.swift; sourceTree = "<group>"; };
+		54B6C8002B471236008E98A6 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
 		54B855E12B2C69F3006965B0 /* CocktailListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -203,6 +205,7 @@
 				54A7F91F2B44260400D95E4B /* Alphabet.swift */,
 				54B6C7F62B46B34B008E98A6 /* FilterChip.swift */,
 				54B6C7F82B46BA9E008E98A6 /* DetailImage.swift */,
+				54B6C8002B471236008E98A6 /* RemoteImage.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -397,6 +400,7 @@
 				54B327682B405C0F00F242D9 /* LoadingSpinnerView.swift in Sources */,
 				54A83E6A2B3F25830038CD07 /* IngredientDetailView.swift in Sources */,
 				54AEA15E2B3EC914003CAE2F /* IngredientListView.swift in Sources */,
+				54B6C8012B471236008E98A6 /* RemoteImage.swift in Sources */,
 				54A7F9202B44260400D95E4B /* Alphabet.swift in Sources */,
 				547223782B2B4B68000B56B5 /* CocktailAppIOSApp.swift in Sources */,
 				54B6C7FF2B46C42F008E98A6 /* DetailIngredientImage.swift in Sources */,

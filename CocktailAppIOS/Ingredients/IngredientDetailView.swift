@@ -69,13 +69,7 @@ struct IngredientDetailView: View {
                 ForEach(viewModel.cocktails){
                     cocktail in
                     VStack{
-                        AsyncImage(url: URL(string: cocktail.thumbNail)){ image in
-                            image
-                                .resizable()
-                        } placeholder: {
-                            Image("preview")
-                                .resizable()
-                        }
+                        CocktailOrIngredientRemoteImage(urlString: cocktail.thumbNail)
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 100, height: 100)
                         .cornerRadius(8)
