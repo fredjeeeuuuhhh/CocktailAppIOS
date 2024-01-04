@@ -20,15 +20,17 @@ struct CocktailListView: View {
                 viewModel.selectedCharacter = "a"
                 viewModel.getAllCocktailsByFirstLetter(firstLetter: "a")
             }
-            .blur(radius: viewModel.isShowingDetail ? 20 : 0)
-            
+           
             if viewModel.isLoading {
                 LoadingSpinnerView()
             }
-            
-            if viewModel.isShowingDetail {
-                CocktailDetailView(cocktailId: viewModel.selectedCocktail!.id, isShowingDetail: $viewModel.isShowingDetail)
-            }
+        }
+        .sheet(isPresented: $viewModel.isShowingDetail){
+            viewModel.isShowingDetail = false
+        } content: {
+            CocktailDetailView(viewModel: CocktailDetailViewModel(cocktailId: viewModel.selectedCocktail!.id))
+                .presentationCornerRadius(8)
+                .presentationDragIndicator(.visible)
         }
         .alert(item: $viewModel.alertItem){
             alertItem in
@@ -40,7 +42,7 @@ struct CocktailListView: View {
         ScrollView(.horizontal){
             LazyHStack{
                 ForEach(Alphabet.characters, id: \.self) { character in
-                    FilterChip(character: character, selectedCharacter: viewModel.selectedCharacter)
+                    FilterChip(character: character, selectedCharacter: $viewModel.selectedCharacter)
                         .onTapGesture {
                             withAnimation {
                                 viewModel.selectedCharacter = character
@@ -63,7 +65,6 @@ struct CocktailListView: View {
                 }
         }
         .navigationTitle("Cocktails")
-        .disabled(viewModel.isShowingDetail)
     }
 }
 

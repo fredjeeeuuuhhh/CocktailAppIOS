@@ -16,6 +16,7 @@ import Foundation
     @Published var selectedCharacter: String = "a"
     
     private var allIngredients: [Ingredient] = []
+    
     func getAllIngredients(){
         isLoading = true
         Task{

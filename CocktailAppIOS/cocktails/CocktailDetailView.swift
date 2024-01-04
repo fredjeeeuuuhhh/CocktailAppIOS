@@ -8,39 +8,36 @@
 import SwiftUI
 
 struct CocktailDetailView: View {
-    @StateObject var viewModel = CocktailDetailViewModel()
-    let cocktailId: Int
-    @Binding var isShowingDetail: Bool
+    @ObservedObject var viewModel: CocktailDetailViewModel
     
     var body: some View {
-        VStack{
-            ScrollView{
-                DetailImage(url: viewModel.cocktail?.thumbNail ?? "")
-                
-                Text(viewModel.cocktail?.title ?? "")
-                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                    .padding()
-                
-                ingredientOverview
-                
-                Divider()
-                    .foregroundColor(Color.accentColor)
-                
-                instructionOverview
+        ZStack{
+            VStack{
+                ScrollView{
+                    DetailImage(url: viewModel.cocktail?.thumbNail ?? "")
+                        .padding(.vertical)
+                    
+                    Text(viewModel.cocktail?.title ?? "")
+                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                        .padding()
+                    
+                    ingredientOverview
+                    
+                    Divider()
+                        .foregroundColor(Color.accentColor)
+                    
+                    instructionOverview
+                }
             }
-            .frame(width: 300, height: 700)
             .background(Color(.systemBackground))
-            .cornerRadius(12)
-            .shadow(radius: 40)
-            .overlay(Button{
-                isShowingDetail = false
-            }label: {
-                DetailCloseButton()
-            }, alignment: .topTrailing)
+            .task {
+                viewModel.getCocktailById(viewModel.cocktailId)
+            }
         }
-        .task {
-            viewModel.getCocktailById(cocktailId)
+        .alert(item: $viewModel.alertItem){
+            alertItem in
+            Alert(title: alertItem.title, message: alertItem.message, dismissButton: alertItem.dismissButton)
         }
     }
     

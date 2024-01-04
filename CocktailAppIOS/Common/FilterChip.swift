@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FilterChip: View {
     let character: String
-    var selectedCharacter: String
+    @Binding var selectedCharacter: String
     var body: some View {
         Text(character)
                 .frame(width: 50, height: 25)

@@ -6,10 +6,18 @@
 //
 
 import Foundation
+import SwiftUI
 
 @MainActor final class CocktailDetailViewModel: ObservableObject{
     @Published var cocktail: Cocktail?
     @Published var alertItem: AlertItem?
+    let cocktailId: Int
+    
+    init(cocktailId: Int) {
+        self.cocktail = nil
+        self.alertItem = nil
+        self.cocktailId = cocktailId
+    }
     
     func getCocktailById(_ id: Int){
         Task{

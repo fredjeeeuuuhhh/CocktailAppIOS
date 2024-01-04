@@ -8,15 +8,14 @@
 import SwiftUI
 
 struct IngredientDetailView: View {
-    @StateObject var viewModel = IngredientDetailViewModel()
-    let ingredientName: String
-    @Binding var isShowingDetail: Bool
-    
+    @ObservedObject var viewModel: IngredientDetailViewModel
+   
     var body: some View {
         ZStack{
             VStack{
                 ScrollView{
                     DetailImage(url: viewModel.ingredient?.thumbnail ?? "")
+                        .padding(.vertical)
                     
                     Text(viewModel.ingredient?.name ?? "")
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
@@ -44,23 +43,23 @@ struct IngredientDetailView: View {
                     Spacer()
                 }
             }
-            .frame(width: 300, height: 700)
             .background(Color(.systemBackground))
-            .cornerRadius(12)
-            .shadow(radius: 40)
-            .overlay(Button{
-                isShowingDetail = false
-            }label: {
-                DetailCloseButton()
-            }, alignment: .topTrailing)
             .task {
-                viewModel.getIngredientByName(ingredientName)
-                viewModel.getCocktailsByIngredientName(ingredientName)
+                viewModel.getIngredientByName(viewModel.ingredientName)
+                viewModel.getCocktailsByIngredientName(viewModel.ingredientName)
             }
-            
-            if viewModel.isShowingCocktailDetail {
-                CocktailDetailView(cocktailId: viewModel.selectedCocktail!.id, isShowingDetail: $viewModel.isShowingCocktailDetail)
-            }
+        }
+        .sheet(isPresented: $viewModel.isShowingCocktailDetail){
+            viewModel.isShowingCocktailDetail = false
+        } content: {
+            CocktailDetailView(viewModel: CocktailDetailViewModel(cocktailId: viewModel.selectedCocktail!.id))
+                .presentationDetents([.medium])
+                .presentationCornerRadius(4)
+                .presentationDragIndicator(.visible)
+        }
+        .alert(item: $viewModel.alertItem){
+            alertItem in
+            Alert(title: alertItem.title, message: alertItem.message, dismissButton: alertItem.dismissButton)
         }
     }
     
@@ -107,5 +106,5 @@ struct IngredientDetailView: View {
 }
 
 #Preview {
-    IngredientDetailView(ingredientName: "Gin",isShowingDetail: .constant(true))
+    IngredientDetailView(viewModel: IngredientDetailViewModel(ingredientName: "Gin"))
 }

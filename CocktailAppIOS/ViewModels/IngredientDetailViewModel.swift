@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 @MainActor final class IngredientDetailViewModel: ObservableObject{
     @Published var ingredient: Ingredient?
@@ -13,6 +14,16 @@ import Foundation
     @Published var alertItem: AlertItem?
     @Published var isShowingCocktailDetail = false
     @Published var selectedCocktail: Cocktail?
+    let ingredientName: String
+
+    init(ingredientName: String){
+        self.ingredient = nil
+        self.cocktails = []
+        self.alertItem = nil
+        self.isShowingCocktailDetail = false
+        self.selectedCocktail = nil
+        self.ingredientName = ingredientName
+    }
     
     func getIngredientByName(_ name: String) {
         Task{

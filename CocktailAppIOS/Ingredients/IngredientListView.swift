@@ -20,15 +20,17 @@ struct IngredientListView: View {
                 viewModel.selectedCharacter = "a"
                 viewModel.getAllIngredients()
             }
-            .blur(radius: viewModel.isShowingDetail ? 20 : 0)
             
             if viewModel.isLoading {
                 LoadingSpinnerView()
             }
-            
-            if(viewModel.isShowingDetail){
-                IngredientDetailView(ingredientName: viewModel.selectedIngredientName!, isShowingDetail: $viewModel.isShowingDetail)
-            }
+        }
+        .sheet(isPresented: $viewModel.isShowingDetail){
+            viewModel.isShowingDetail = false
+        }  content:{
+            IngredientDetailView(viewModel: IngredientDetailViewModel(ingredientName: viewModel.selectedIngredientName!))
+                .presentationCornerRadius(8)
+                .presentationDragIndicator(.visible)
         }
         .alert(item: $viewModel.alertItem){
             alertItem in
@@ -41,14 +43,13 @@ struct IngredientListView: View {
             LazyHStack{
                 ForEach(Alphabet.characters, id: \.self){
                     character in
-                    FilterChip(character: character, selectedCharacter: viewModel.selectedCharacter)
+                    FilterChip(character: character, selectedCharacter: $viewModel.selectedCharacter)
                         .onTapGesture {
                             withAnimation {
                                 viewModel.selectedCharacter = character
                                 viewModel.filterOnFirstCharacter(character)
                             }
                         }
-                    
                 }
             }
         }
@@ -65,7 +66,6 @@ struct IngredientListView: View {
                 }
         }
         .navigationTitle("Ingredients")
-        .disabled(viewModel.isShowingDetail)
     }
 }
 
