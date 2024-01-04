@@ -11,42 +11,10 @@ struct CocktailListView: View {
     @StateObject var viewModel = CocktailListViewModel()
    
     var body: some View {
-        
         ZStack{
             NavigationStack{
-                ScrollView(.horizontal){
-                    LazyHStack{
-                        ForEach(Alphabet.characters, id: \.self) { character in
-                            Text(character)
-                                    .frame(width: 50, height: 25)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .stroke(Color.black, lineWidth: 2)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 8)
-                                                    .foregroundColor(viewModel.selectedCharacter == character ? Color.accentColor : Color.clear)
-                                            )
-                                    )
-                                    .padding(2)
-                                    .onTapGesture {
-                                        withAnimation {
-                                            viewModel.selectedCharacter = character
-                                            viewModel.getAllCocktailsByFirstLetter(firstLetter: character)
-                                        }
-                                    }
-                        }
-                    }
-                }
-                .frame(height: 50)
-                List(viewModel.cocktails){ cocktail in
-                   CocktailListItem(cocktail: cocktail)
-                        .onTapGesture {
-                            viewModel.selectedCocktail = cocktail
-                            viewModel.isShowingDetail = true
-                        }
-                }
-                .navigationTitle("Cocktails")
-                .disabled(viewModel.isShowingDetail)
+                filterView
+                listView
             }
             .task {
                 viewModel.selectedCharacter = "a"
@@ -66,6 +34,36 @@ struct CocktailListView: View {
             alertItem in
             Alert(title: alertItem.title, message: alertItem.message, dismissButton: alertItem.dismissButton)
         }
+    }
+    
+    var filterView: some View{
+        ScrollView(.horizontal){
+            LazyHStack{
+                ForEach(Alphabet.characters, id: \.self) { character in
+                    FilterChip(character: character, selectedCharacter: viewModel.selectedCharacter)
+                        .onTapGesture {
+                            withAnimation {
+                                viewModel.selectedCharacter = character
+                                viewModel.getAllCocktailsByFirstLetter(firstLetter: character)
+                            }
+                        }
+                }
+            }
+        }
+        .frame(height: 50)
+    }
+    
+    var listView: some View{
+        List(viewModel.cocktails){ cocktail in
+           CocktailListItem(cocktail: cocktail)
+                .listRowSeparator(.hidden)
+                .onTapGesture {
+                    viewModel.selectedCocktail = cocktail
+                    viewModel.isShowingDetail = true
+                }
+        }
+        .navigationTitle("Cocktails")
+        .disabled(viewModel.isShowingDetail)
     }
 }
 
