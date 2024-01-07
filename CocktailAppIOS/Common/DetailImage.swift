@@ -13,7 +13,6 @@ struct DetailImage: View {
         if url != ""{
             CocktailOrIngredientRemoteImage(urlString: url)
             .aspectRatio(contentMode: .fit)
-            .frame(width: 300, height: 300)
         }
     }
 }

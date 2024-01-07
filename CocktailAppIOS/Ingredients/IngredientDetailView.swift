@@ -9,20 +9,48 @@ import SwiftUI
 
 struct IngredientDetailView: View {
     @ObservedObject var viewModel: IngredientDetailViewModel
-   
+    @Environment(\.verticalSizeClass)var verticalSizeClass
+    @Binding var isShowingDetail:Bool
     var body: some View {
         ZStack{
             VStack{
                 ScrollView{
-                    DetailImage(url: viewModel.ingredient?.thumbnail ?? "")
-                        .padding(.vertical)
-                    
-                    Text(viewModel.ingredient?.name ?? "")
-                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                        .padding()
-                    
-                    characteristics
+                    if verticalSizeClass == .compact{
+                        HStack{
+                            DetailImage(url: viewModel.ingredient?.thumbnail ?? "")
+                                .frame(width: 150, height: 150)
+                                .padding()
+                            Spacer()
+                            VStack{
+                                Text(viewModel.ingredient?.name ?? "")
+                                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                                    .padding()
+                                
+                                characteristics
+                            }
+                            Spacer()
+                            Spacer()
+                        }
+                        .overlay(Button{
+                            isShowingDetail = false
+                        }label:{
+                            Text("Dismiss")
+                                .padding()
+                        },alignment: .topTrailing)
+                    }else{
+                        DetailImage(url: viewModel.ingredient?.thumbnail ?? "")
+                            .frame(width: 200, height: 200)
+                            .padding(.vertical)
+                        
+                        Text(viewModel.ingredient?.name ?? "")
+                            .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                            .padding()
+                        
+                        characteristics
+                    }
+                   
                     
                     Divider()
                         .foregroundColor(.accentColor)
@@ -52,7 +80,7 @@ struct IngredientDetailView: View {
         .sheet(isPresented: $viewModel.isShowingCocktailDetail){
             viewModel.isShowingCocktailDetail = false
         } content: {
-            CocktailDetailView(viewModel: CocktailDetailViewModel(cocktailId: viewModel.selectedCocktail!.id))
+            CocktailDetailView(viewModel: CocktailDetailViewModel(cocktailId: viewModel.selectedCocktail!.id),isShowingDetail: $viewModel.isShowingCocktailDetail)
                 .presentationDetents([.medium])
                 .presentationCornerRadius(4)
                 .presentationDragIndicator(.visible)
@@ -100,5 +128,5 @@ struct IngredientDetailView: View {
 }
 
 #Preview {
-    IngredientDetailView(viewModel: IngredientDetailViewModel(ingredientName: "Gin"))
+    IngredientDetailView(viewModel: IngredientDetailViewModel(ingredientName: "Gin"),isShowingDetail: .constant(false))
 }

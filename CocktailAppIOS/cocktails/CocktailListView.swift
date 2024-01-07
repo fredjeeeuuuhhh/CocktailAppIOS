@@ -28,7 +28,7 @@ struct CocktailListView: View {
         .sheet(isPresented: $viewModel.isShowingDetail){
             viewModel.isShowingDetail = false
         } content: {
-            CocktailDetailView(viewModel: CocktailDetailViewModel(cocktailId: viewModel.selectedCocktail!.id))
+            CocktailDetailView(viewModel: CocktailDetailViewModel(cocktailId: viewModel.selectedCocktail!.id),isShowingDetail: $viewModel.isShowingDetail)
                 .presentationCornerRadius(8)
                 .presentationDragIndicator(.visible)
         }
@@ -54,8 +54,11 @@ struct CocktailListView: View {
         }
         .frame(height: 50)
     }
-    
+    @ViewBuilder
     var listView: some View{
+        if viewModel.cocktails.isEmpty{
+            Text("No cocktails that start with \(viewModel.selectedCharacter)")
+        }
         List(viewModel.cocktails){ cocktail in
            CocktailListItem(cocktail: cocktail)
                 .listRowSeparator(.hidden)
@@ -64,7 +67,6 @@ struct CocktailListView: View {
                     viewModel.isShowingDetail = true
                 }
         }
-        .navigationTitle("Cocktails")
     }
 }
 

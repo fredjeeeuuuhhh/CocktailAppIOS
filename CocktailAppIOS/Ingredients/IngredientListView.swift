@@ -28,7 +28,7 @@ struct IngredientListView: View {
         .sheet(isPresented: $viewModel.isShowingDetail){
             viewModel.isShowingDetail = false
         }  content:{
-            IngredientDetailView(viewModel: IngredientDetailViewModel(ingredientName: viewModel.selectedIngredientName!))
+            IngredientDetailView(viewModel: IngredientDetailViewModel(ingredientName: viewModel.selectedIngredientName!),isShowingDetail: $viewModel.isShowingDetail)
                 .presentationCornerRadius(8)
                 .presentationDragIndicator(.visible)
         }
@@ -55,8 +55,11 @@ struct IngredientListView: View {
         }
         .frame(height: 50)
     }
-    
+    @ViewBuilder
     var listView: some View{
+        if viewModel.ingredients.isEmpty{
+            Text("No ingredients that start with \(viewModel.selectedCharacter)")
+        }
         List(viewModel.ingredients){ ingredient in
             IngredientListItem(ingredient: ingredient)
                 .listRowSeparator(.hidden)
@@ -65,7 +68,6 @@ struct IngredientListView: View {
                     viewModel.isShowingDetail = true
                 }
         }
-        .navigationTitle("Ingredients")
     }
 }
 

@@ -9,25 +9,56 @@ import SwiftUI
 
 struct CocktailDetailView: View {
     @ObservedObject var viewModel: CocktailDetailViewModel
-    
+    @Environment(\.verticalSizeClass)var verticalSizeClass
+    @Binding var isShowingDetail:Bool
     var body: some View {
         ZStack{
             VStack{
                 ScrollView{
-                    DetailImage(url: viewModel.cocktail?.thumbNail ?? "")
-                        .padding(.vertical)
-                    
-                    Text(viewModel.cocktail?.title ?? "")
-                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                        .padding()
-                    
-                    ingredientOverview
-                    
-                    Divider()
-                        .foregroundColor(Color.accentColor)
-                    
-                    instructionOverview
+                    if verticalSizeClass == .compact{
+                        HStack{
+                            DetailImage(url: viewModel.cocktail?.thumbNail ?? "")
+                                .frame(width: 200, height: 200)
+                                .padding()
+                            
+                            Spacer()
+                            VStack{
+                                Text(viewModel.cocktail?.title ?? "")
+                                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                                    .padding()
+                                Divider()
+                                    .foregroundColor(Color.accentColor)
+                                
+                                instructionOverview
+                            }
+                            
+                            Spacer()
+                        }
+                        .overlay(Button{
+                            isShowingDetail = false
+                        }label:{
+                            Text("Dismiss")
+                                .padding()
+                        },alignment: .topTrailing)
+                        ingredientOverview
+                    }else{
+                        DetailImage(url: viewModel.cocktail?.thumbNail ?? "")
+                            .frame(width: 300, height: 300)
+                            .padding(.vertical)
+                        
+                        Text(viewModel.cocktail?.title ?? "")
+                            .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                            .padding()
+                        
+                        ingredientOverview
+                        
+                        Divider()
+                            .foregroundColor(Color.accentColor)
+                        
+                        instructionOverview
+                    }
                 }
             }
             .background(Color(.systemBackground))
