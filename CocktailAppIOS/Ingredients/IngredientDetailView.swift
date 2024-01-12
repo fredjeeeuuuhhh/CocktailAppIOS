@@ -73,17 +73,9 @@ struct IngredientDetailView: View {
             }
             .background(Color(.systemBackground))
             .task {
-                viewModel.getIngredientByName(viewModel.ingredientName)
-                viewModel.getCocktailsByIngredientName(viewModel.ingredientName)
+                viewModel.getIngredientByName()
+                viewModel.getCocktailsByIngredientName()
             }
-        }
-        .sheet(isPresented: $viewModel.isShowingCocktailDetail){
-            viewModel.isShowingCocktailDetail = false
-        } content: {
-            CocktailDetailView(viewModel: CocktailDetailViewModel(cocktailId: viewModel.selectedCocktail!.id),isShowingDetail: $viewModel.isShowingCocktailDetail)
-                .presentationDetents([.medium])
-                .presentationCornerRadius(4)
-                .presentationDragIndicator(.visible)
         }
         .alert(item: $viewModel.alertItem){
             alertItem in
@@ -104,10 +96,6 @@ struct IngredientDetailView: View {
                         
                         Text(cocktail.title)
                             .multilineTextAlignment(.center)
-                    }
-                    .onTapGesture {
-                        viewModel.selectedCocktail = cocktail
-                        viewModel.isShowingCocktailDetail = true
                     }
                 }
             }

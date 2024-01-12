@@ -18,10 +18,10 @@ import Foundation
         self.cocktailId = cocktailId
     }
     
-    func getCocktailById(_ id: Int){
+    func getCocktailById(){
         Task{
             do{
-                cocktail = try await NetworkManager.shared.getCocktailById(id: id).mapToCocktails().first
+                cocktail = try await NetworkManager.shared.getCocktailById(id: cocktailId).mapToCocktails().first
             }catch{
                 if let cocktailError = error as? CocktailError{
                     switch cocktailError{

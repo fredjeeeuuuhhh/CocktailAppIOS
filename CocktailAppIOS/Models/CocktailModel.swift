@@ -11,7 +11,7 @@ struct ApiCocktail: Decodable{
     let idDrink: String
     let strDrink: String
     let strCategory: String?
-    let strAlcohol: String?
+    let strAlcoholic: String?
     let strGlass: String?
     let strInstructions: String?
     let strDrinkThumb: String

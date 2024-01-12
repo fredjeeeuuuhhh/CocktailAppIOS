@@ -10,7 +10,7 @@ import Foundation
 extension [ApiCocktail] {
     func mapToCocktails() -> [Cocktail] {
         return self.map{ apiCocktail in
-            Cocktail(id: Int(apiCocktail.idDrink)!, title: apiCocktail.strDrink, category: apiCocktail.strCategory, alcoholicFilter: apiCocktail.strAlcohol, glass: apiCocktail.strGlass, instructions: apiCocktail.strInstructions, thumbNail: apiCocktail.strDrinkThumb + "/preview", ingredients: [
+            Cocktail(id: Int(apiCocktail.idDrink)!, title: apiCocktail.strDrink, category: apiCocktail.strCategory, alcoholicFilter: apiCocktail.strAlcoholic, glass: apiCocktail.strGlass, instructions: apiCocktail.strInstructions, thumbNail: apiCocktail.strDrinkThumb + "/preview", ingredients: [
                 apiCocktail.strIngredient1,
                 apiCocktail.strIngredient2,
                 apiCocktail.strIngredient3,

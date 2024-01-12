@@ -63,7 +63,7 @@ struct CocktailDetailView: View {
             }
             .background(Color(.systemBackground))
             .task {
-                viewModel.getCocktailById(viewModel.cocktailId)
+                viewModel.getCocktailById()
             }
         }
         .alert(item: $viewModel.alertItem){

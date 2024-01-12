@@ -11,23 +11,20 @@ import Foundation
     @Published var ingredient: Ingredient?
     @Published var cocktails: [Cocktail] = []
     @Published var alertItem: AlertItem?
-    @Published var isShowingCocktailDetail = false
-    @Published var selectedCocktail: Cocktail?
+
     let ingredientName: String
 
     init(ingredientName: String){
         self.ingredient = nil
         self.cocktails = []
         self.alertItem = nil
-        self.isShowingCocktailDetail = false
-        self.selectedCocktail = nil
         self.ingredientName = ingredientName
     }
     
-    func getIngredientByName(_ name: String) {
+    func getIngredientByName() {
         Task{
             do{
-                ingredient = try await NetworkManager.shared.getIngredientByName(name: name).mapToIngredient()
+                ingredient = try await NetworkManager.shared.getIngredientByName(name: ingredientName).mapToIngredient()
             }catch{
                 if let cocktailError = error as? CocktailError{
                     switch cocktailError{
@@ -41,10 +38,10 @@ import Foundation
         }
     }
     
-    func getCocktailsByIngredientName(_ name: String) {
+    func getCocktailsByIngredientName() {
         Task{
             do{
-                let cocktailResponse = try await NetworkManager.shared.getCocktailsByIngredientName(name: name).mapToCocktails()
+                let cocktailResponse = try await NetworkManager.shared.getCocktailsByIngredientName(name: ingredientName).mapToCocktails()
                 cocktails = cocktailResponse
             }catch{
                 if let cocktailError = error as? CocktailError{
